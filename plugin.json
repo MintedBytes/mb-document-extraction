@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "id": "organisation.document-extraction",
+  "version": "1.0.0",
+  "name": "Belegtext lesen",
+  "description": "Liest den Text eines PDFs – roh, nach Position zusammengesetzt wie gedruckt, oder vom Modell in Felder zerlegt.",
+  "kind": "extension",
+  "runtime": {
+    "type": "sandbox",
+    "sdk": "^1.1"
+  },
+  "appearance": {
+    "color": "#0F766E"
+  },
+  "provides": [
+    {
+      "category": "productivity.documents",
+      "contractVersion": "1.0"
+    }
+  ],
+  "tags": ["Dokumente", "PDF"],
+  "aiProvider": {
+    "required": false,
+    "purpose": "Nur für die Lesart „struktur\": Das Modell zerlegt den gelesenen Belegtext in Felder und Positionen.",
+    "scope": "environment"
+  },
+  "tools": [
+    {
+      "id": "documents.extract",
+      "name": "Text aus PDF lesen",
+      "description": "Gibt den Text einer PDF-Datei zurück. „layout\" setzt ihn nach Position zusammen, wie er gedruckt ist – für Belege mit Positionstabellen die einzige brauchbare Lesart. Ein Scan ohne Textebene wird abgelehnt, nicht geraten.",
+      "effect": "read",
+      "ai": true,
+      "fileInputs": ["documentFile"],
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "documentFile": {
+            "type": "string",
+            "title": "PDF-Datei",
+            "description": "Die Datei des Aufrufs, aus der gelesen wird."
+          },
+          "mode": {
+            "type": "string",
+            "title": "Lesart",
+            "description": "layout (Vorgabe): wie gedruckt. roh: in der Reihenfolge, in der das PDF zeichnet. struktur: das Modell zerlegt den Text in Felder – braucht eine KI-Anbindung.",
+            "enum": ["roh", "layout", "struktur"]
+          }
+        },
+        "required": ["documentFile"],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "mode": { "type": "string", "enum": ["roh", "layout", "struktur"] },
+          "text": { "type": "string", "description": "Der gelesene Text; bei „struktur\" das JSON des Modells." },
+          "pages": { "type": "number", "description": "Wie viele Seiten gelesen wurden." },
+          "truncated": { "type": "boolean", "description": "Der Text war länger und wurde gekürzt." },
+          "notes": {
+            "type": "array",
+            "description": "Was beim Lesen auffiel und das Ergebnis erklärt – gedrehte Seiten, fehlende Teile.",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["mode", "text", "pages", "truncated", "notes"],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

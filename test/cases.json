@@ -1,0 +1,93 @@
+[
+  {
+    "name": "setzt eine spaltenweise gezeichnete Tabelle wieder zusammen",
+    "tool": "documents.extract",
+    "input": {
+      "documentFile": "test/bestellung.pdf"
+    },
+    "expect": {
+      "output": {
+        "mode": "layout",
+        "text": "--- Seite 1 ---\nBestellung 2026-0815\n\nMusterlieferant GmbH\n\nArtikel            Menge           Preis\n\nSchraube M8            10            1,20\nMutter M8            4            0,40\nScheibe 8mm            25            0,10\n\nLieferung frei Haus.",
+        "pages": 1,
+        "truncated": false,
+        "notes": []
+      }
+    }
+  },
+  {
+    "name": "roh gibt die Reihenfolge des Erzeugers zurück",
+    "tool": "documents.extract",
+    "input": {
+      "documentFile": "test/bestellung.pdf",
+      "mode": "roh"
+    },
+    "expect": {
+      "output": {
+        "mode": "roh",
+        "text": "--- Seite 1 ---\nBestellung 2026-0815 Musterlieferant GmbH Artikel Menge Preis 10 4 25 Schraube M8 Mutter M8 Scheibe 8mm 1,20 0,40 0,10 Lieferung frei Haus.",
+        "pages": 1,
+        "truncated": false,
+        "notes": []
+      }
+    }
+  },
+  {
+    "name": "struktur gibt das JSON des Modells zurück",
+    "tool": "documents.extract",
+    "input": {
+      "documentFile": "test/bestellung.pdf",
+      "mode": "struktur"
+    },
+    "ai": [
+      {
+        "belegnummer": "2026-0815",
+        "positions": [
+          {
+            "artikel": "Schraube M8",
+            "menge": 10
+          }
+        ]
+      }
+    ],
+    "expect": {
+      "output": {
+        "mode": "struktur",
+        "text": "{\n  \"belegnummer\": \"2026-0815\",\n  \"positions\": [\n    {\n      \"artikel\": \"Schraube M8\",\n      \"menge\": 10\n    }\n  ]\n}",
+        "pages": 1,
+        "truncated": false,
+        "notes": []
+      }
+    }
+  },
+  {
+    "name": "ein Scan ohne Textebene wird abgelehnt statt geraten",
+    "tool": "documents.extract",
+    "input": {
+      "documentFile": "test/scan-ohne-text.pdf"
+    },
+    "expect": {
+      "error": "document.no_text_layer"
+    }
+  },
+  {
+    "name": "ein verschlüsseltes PDF wird abgelehnt",
+    "tool": "documents.extract",
+    "input": {
+      "documentFile": "test/verschluesselt.pdf"
+    },
+    "expect": {
+      "error": "document.encrypted"
+    }
+  },
+  {
+    "name": "was kein PDF ist, wird als solches benannt",
+    "tool": "documents.extract",
+    "input": {
+      "documentFile": "test/keine-pdf.txt"
+    },
+    "expect": {
+      "error": "document.not_a_pdf"
+    }
+  }
+]

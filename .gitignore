@@ -1,0 +1,4 @@
+# Lokale Konfiguration und Geheimnisse von mbplugin dev
+.mbplugin/
+# Gepackte Plugin-Dateien
+*.mbplugin

@@ -1,5 +1,13 @@
 # Änderungen
 
+## 1.0.1
+
+- Das Feld `documentFile` sagt jetzt, was es erwartet: die Kennung eines
+  Anhangs dieses Laufs, nicht seinen Inhalt. Die alte Beschreibung („die Datei
+  des Aufrufs") las sich wie eine Aufforderung, die Datei zu übergeben — ein
+  Aufruf mit dem Inhalt wurde folgerichtig abgelehnt, und der Fehlertext nannte
+  die Ursache nicht.
+
 ## 1.0.0
 
 - Erste Fassung: liest den Text eines PDFs in drei Lesarten (`roh`, `layout`,

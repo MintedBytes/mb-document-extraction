@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "organisation.document-extraction",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Belegtext lesen",
   "description": "Liest den Text eines PDFs – roh, nach Position zusammengesetzt wie gedruckt, oder vom Modell in Felder zerlegt.",
   "kind": "extension",
@@ -38,7 +38,7 @@
           "documentFile": {
             "type": "string",
             "title": "PDF-Datei",
-            "description": "Die Datei des Aufrufs, aus der gelesen wird."
+            "description": "Die Kennung (id) eines Anhangs dieses Laufs, z. B. context.chat.attachments[0].id — nicht der Inhalt und kein Dateiname."
           },
           "mode": {
             "type": "string",
